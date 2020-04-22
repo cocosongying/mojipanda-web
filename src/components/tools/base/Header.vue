@@ -1,0 +1,7 @@
+<template>
+  <div class="callout callout-info">
+    <h4>I am an info callout!</h4>
+
+    <p>Follow the steps to continue to payment.</p>
+  </div>
+</template>

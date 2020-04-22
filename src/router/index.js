@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import Admin from '@/components/Admin'
+import Tools from '@/components/Tools'
 import api from '@/const/api'
 
 Vue.prototype.ConstApi = api
@@ -16,9 +16,16 @@ export default new Router({
       component: Home
     },
     {
-      path: '/admin',
-      name: 'Admin',
-      component: Admin
+      path: '/tools',
+      name: 'Tools',
+      component: Tools,
+      children: [
+        {
+          path: '/',
+          name: 'home',
+          component: () => import('@/components/tools/Home.vue')
+        }
+      ]
     }
   ]
 })
