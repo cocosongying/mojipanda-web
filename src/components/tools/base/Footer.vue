@@ -4,7 +4,7 @@
     <div class="container text-center">
       <strong>
         Copyright &copy; 2020
-        <a href="#">MojiPanda</a>.
+        <a href="/">MojiPanda</a>.
       </strong> All rights reserved.
       <br />
     </div>

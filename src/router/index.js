@@ -24,6 +24,11 @@ export default new Router({
           path: '/',
           name: 'home',
           component: () => import('@/components/tools/Home.vue')
+        },
+        {
+          path: 'calrelations',
+          name: 'calrelations',
+          component: () => import('@/components/tools/other/CalRelations.vue')
         }
       ]
     }

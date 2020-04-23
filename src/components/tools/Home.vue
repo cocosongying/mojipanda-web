@@ -46,9 +46,9 @@ export default {
     let list = {
       other: [
         {
-          name: "Hello",
-          url: "tools/hello",
-          icon: "fa fa-bitbucket",
+          name: "亲戚关系计算器",
+          url: "tools/calrelations",
+          icon: "fa fa-calculator",
           color: "bg-purple"
         }
       ]

@@ -18,7 +18,7 @@
             button
             v-for="(info, index) in menuList"
             :key="index"
-            @click="jumpTo(info.url)"
+            @click="jumpTo(info.url, info.internal)"
           >
             <mu-icon :value="info.icon" :color="info.color"></mu-icon>
             <mu-list-item-title style="margin-left: 8px">{{ info.name }}</mu-list-item-title>
@@ -50,13 +50,14 @@
 }
 
 @media screen and (max-width: 600px) {
-  .background{
-        position:absolute;
-        width:100%;
-        height:100%;
-        background:url(https://cn-south-227-storage-hitokoto-19627663.oss.dogecdn.com/pic/930f5212c99ccc71accd4615cb03e255.jpg) center no-repeat;
-        background-size:cover;
-    }
+  .background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url(https://cn-south-227-storage-hitokoto-19627663.oss.dogecdn.com/pic/930f5212c99ccc71accd4615cb03e255.jpg)
+      center no-repeat;
+    background-size: cover;
+  }
 }
 </style>
 <style>
@@ -79,7 +80,12 @@ export default {
     let menuList = [
       { name: "文档", url: "/doc", icon: "book", color: "blue" },
       { name: "博客", url: "/blog", icon: "bookmark", color: "indigo" },
-      { name: "工具", url: "/tools", icon: "build", color: "green" }
+      {
+        name: "工具",
+        url: "/tools",
+        icon: "build",
+        color: "green"
+      }
     ];
     return {
       docked: false,
@@ -90,9 +96,12 @@ export default {
     };
   },
   methods: {
-    jumpTo(href) {
-      // this.$router.push({path: '/doc'})
-      window.location.href = href;
+    jumpTo(href, internal) {
+      if (internal) {
+        this.$router.push({ path: href });
+      } else {
+        window.open(href, "_blank");
+      }
     }
   }
 };
