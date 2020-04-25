@@ -26,8 +26,11 @@ export default new Router({
         },
         {
           path: 'calrelations',
-          name: 'calrelations',
           component: () => import('@/components/tools/other/CalRelations.vue')
+        },
+        {
+          path: 'mask',
+          component: () => import('@/components/tools/picture/Mask.vue')
         }
       ]
     },

@@ -33,6 +33,24 @@
               </div>
             </div>
           </div>
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">图片工具</h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                  <i class="fa fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="col-md-3" v-for="(info, index) in list.pic" :key="index">
+                <a class="btn btn-block btn-social margin" :class="info.color" :href="info.url">
+                  <i :class="info.icon"></i>
+                  {{ info.name }}
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-md-1"></div>
       </div>
@@ -50,6 +68,14 @@ export default {
           url: "tools/calrelations",
           icon: "fa fa-calculator",
           color: "bg-purple"
+        }
+      ],
+      pic: [
+        {
+          name: "头像加口罩",
+          url: "tools/mask",
+          icon: "fa fa-coffee",
+          color: "bg-blue"
         }
       ]
     };
