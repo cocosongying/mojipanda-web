@@ -76,16 +76,13 @@ body {
 </style>
 <script>
 export default {
+  // https://material.io/resources/icons/?style=baseline
   data() {
     let menuList = [
       { name: "文档", url: "/doc", icon: "book", color: "blue" },
       { name: "博客", url: "/blog", icon: "bookmark", color: "indigo" },
-      {
-        name: "工具",
-        url: "/tools",
-        icon: "build",
-        color: "green"
-      }
+      { name: "工具", url: "/tools", icon: "build", color: "green" },
+      { name: "演示", url: "/ppt", icon: "speaker_notes", color: "orange" }
     ];
     return {
       docked: false,
@@ -107,5 +104,6 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
+@import "muse-ui/dist/muse-ui.css";
 </style>

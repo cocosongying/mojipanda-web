@@ -6,12 +6,6 @@ import VueAxios from 'vue-axios'
 import App from './App'
 import router from './router'
 import MuseUI from 'muse-ui'
-import 'muse-ui/dist/muse-ui.css';
-import 'admin-lte/bower_components/bootstrap/dist/css/bootstrap.min.css'
-import 'admin-lte/bower_components/font-awesome/css/font-awesome.min.css'
-import 'admin-lte/bower_components/Ionicons/css/ionicons.min.css'
-import 'admin-lte/dist/css/skins/_all-skins.min.css'
-import 'admin-lte/dist/css/AdminLTE.min.css'
 import 'admin-lte/bower_components/bootstrap/dist/js/bootstrap.min.js'
 import 'admin-lte/dist/js/adminlte.min.js'
 
