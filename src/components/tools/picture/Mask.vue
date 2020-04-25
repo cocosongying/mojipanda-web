@@ -7,7 +7,7 @@
         <div class="col-md-10">
           <div class="alert alert-info">
             <h4>说明</h4>
-            <p>hehe</p>
+            <p>+ 请先选择图片，再选择口罩样式，在预览区域调整口罩位置、角度、缩放大小等，最后点击下载按钮即可</p>
           </div>
           <div class="box box-primary">
             <div class="box-header with-border">
@@ -51,17 +51,13 @@
             <div class="box-header with-border">
               <h3 class="box-title">预览</h3>
               <div class="box-tools pull-right">
-                <button type="button" class="btn btn-info" @click="downloadImg">
-                  下载
-                  <!-- <i class="fa fa-minus"></i> -->
-                </button>
+                <button type="button" class="btn btn-info" @click="downloadImg">下载</button>
               </div>
             </div>
             <div class="box-body">
               <div>
-                <canvas id="a" width="240" height="240"></canvas>
+                <canvas id="headCanvas"></canvas>
               </div>
-              <!-- <img :src="imgUrl1" style="max-height:360px;max-width:360px;" /> -->
             </div>
           </div>
         </div>
@@ -75,75 +71,82 @@
 import { fabric } from "fabric";
 export default {
   data() {
-    var canvas = new fabric.Canvas("a");
-    var masks = [{ name: "00.png" }, { name: "01.png" }, { name: "02.png" }];
+    const canvas = new fabric.Canvas("headCanvas");
+    const masks = [{ name: "00.png" }, { name: "01.png" }, { name: "02.png" }];
     return {
-      imgUrl: "",
       fileName: "",
       maskBasic: "/static/img/mask/",
       maskStyle: 0,
+      imgSize: 240,
       masks,
       canvas
     };
   },
   mounted() {
-    this.canvas = new fabric.Canvas("a");
-    // var rect = new fabric.Rect({
-    //   top: 50,
-    //   left: 100,
-    //   width: 100,
-    //   height: 70,
-    //   fill: "red"
-    // });
-    // canvas.add(rect);
+    this.canvas = new fabric.Canvas("headCanvas");
   },
   methods: {
+    // 文件选择控件的 click 事件绑定到自定义的文本输入控件
     choiceImg: function() {
       this.$refs.fileUp.dispatchEvent(new MouseEvent("click"));
     },
+    // 选择口罩样式
     choiceMask: function() {
       let _this = this;
+      // 当前已有打开的图片时
       if (_this.fileName) {
+        // 检查 canvas 是否已有元素, 如果已有需要先删除再重新添加新的元素
         let ele = _this.canvas.item(0);
         if (ele) {
           _this.canvas.remove(ele);
         }
+        // 加载选择的口罩样式
         fabric.Image.fromURL(
           _this.maskBasic + _this.masks[_this.maskStyle].name,
           function(img) {
+            // 设置图片大小
             let scale =
-              img.width > img.height ? 240 / img.width : 240 / img.height;
+              img.width > img.height
+                ? _this.imgSize / img.width
+                : _this.imgSize / img.height;
             scale *= 0.5;
-            let left = (240 - img.width * scale) / 2;
+            // 设置图片位置居中
+            let left = (_this.imgSize - img.width * scale) / 2;
             img.scale(scale).set({ left: left, top: 10 });
+            // 添加图片到 canvas
             _this.canvas.add(img).setActiveObject(img);
           }
         );
       }
     },
+    // 下载图片
     downloadImg: function() {
-      console.log("download");
-      const url = this.canvas.toDataURL("image/png", 1.0);
+      const type = "image/png";
+      const url = this.canvas.toDataURL(type, 1.0);
       const link = document.createElement("a");
-      link.download = "a.png";
+      const name = "mask" + Date.now() + ".png";
+      link.download = name;
       link.href = url;
-      link.dataset.downloadurl = ["image/png", link.download, link.href].join(
-        ":"
-      );
+      link.dataset.downloadurl = [type, link.download, link.href].join(":");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     },
+    // 打开图片文件
     getFile: function(event) {
       let _this = this;
-      var file = event.target.files[0];
-      var reader = new FileReader();
+      let file = event.target.files[0];
+      let reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function(f) {
-        var data = f.target.result;
+        let data = f.target.result;
         fabric.Image.fromURL(data, function(img) {
-          var scale =
-            img.width > img.height ? 240 / img.width : 240 / img.height;
+          // 设置图片大小
+          let scale =
+            img.width > img.height
+              ? _this.imgSize / img.width
+              : _this.imgSize / img.height;
+          // 将图片设置为 canvas 的背景图片
           _this.canvas.setBackgroundImage(
             img,
             _this.canvas.renderAll.bind(_this.canvas),
@@ -152,10 +155,12 @@ export default {
               scaleY: scale
             }
           );
+          _this.canvas.setWidth(img.width * scale);
+          _this.canvas.setHeight(img.height * scale);
         });
       };
+      // 图片加载完成，将选中的口罩样式添加到图片上
       reader.onloadend = function() {
-        _this.imgUrl = this.result;
         _this.choiceMask();
       };
       this.fileName = file.name;
